@@ -1,50 +1,52 @@
 //
-// Created by getname on 29.01.2025.
+// Файл создан getname 29.01.2025.
+// Реализация класса Camera для управления камерой в 3D-сцене.
 //
 
 #include "Camera.h"
+#include <glm/ext/matrix_clip_space.hpp> // Для glm::perspective.
+#include <glm/ext/matrix_transform.hpp>  // Для glm::lookAt и glm::rotate.
+#include "Window.h"                      // Для получения размеров окна.
 
-#include <glm/ext/matrix_clip_space.hpp>
-#include <glm/ext/matrix_transform.hpp>
-
-#include "Window.h"
-
+// Обновляет векторы направления камеры (front, right, up) на основе текущей матрицы вращения.
 void Camera::updateVectors() {
-    // Обновляем вектор направления вперед, используя матрицу вращения.
+    // Вектор "вперед" (направление, куда смотрит камера).
     front = glm::vec3(rotation * glm::vec4(0, 0, -1, 0));
-    // Обновляем вектор направления вправо.
+    // Вектор "вправо" (направление вправо относительно камеры).
     right = glm::vec3(rotation * glm::vec4(1, 0, 0, 1));
-    // Обновляем вектор направления вверх.
+    // Вектор "вверх" (направление вверх относительно камеры).
     up = glm::vec3(rotation * glm::vec4(0, 1, 0, 1));
 }
 
+// Конструктор: инициализирует камеру с заданной позицией и углом обзора.
 Camera::Camera(const glm::vec3 pos, const float fov) : pos(pos), fov(fov) {
-    // Инициализируем позицию и угол обзора, затем обновляем векторы направления.
+    // Инициализируем векторы направления.
     updateVectors();
 }
 
+// Поворачивает камеру вокруг осей X, Y и Z на заданные углы.
 void Camera::rotate(const float x, const float y, const float z) {
-    // Поворачиваем камеру вокруг оси Z на угол z.
+    // Вращение вокруг оси Z (крен).
     rotation = glm::rotate(rotation, z, glm::vec3(0, 0, 1));
-    // Поворачиваем камеру вокруг оси Y на угол y.
+    // Вращение вокруг оси Y (тангаж).
     rotation = glm::rotate(rotation, y, glm::vec3(0, 1, 0));
-    // Поворачиваем камеру вокруг оси X на угол x.
+    // Вращение вокруг оси X (рыскание).
     rotation = glm::rotate(rotation, x, glm::vec3(1, 0, 0));
 
-    // Обновляем векторы направления после изменения углов.
+    // Обновляем векторы направления после вращения.
     updateVectors();
 }
 
+// Возвращает матрицу перспективной проекции для камеры.
 glm::mat4 Camera::getProjection() const {
     // Вычисляем соотношение сторон окна.
     const float aspect = static_cast<float>(Window::width) / static_cast<float>(Window::height);
-    // Возвращаем матрицу перспективной проекции.
+    // Создаем матрицу перспективной проекции.
     return glm::perspective(fov, aspect, 0.1f, 100.0f);
 }
 
+// Возвращает матрицу вида, которая определяет, как сцена будет отображаться из позиции камеры.
 glm::mat4 Camera::getView() const {
-    // Возвращаем матрицу вида, которая определяет, как сцена будет отображаться из позиции камеры.
+    // Матрица вида строится на основе позиции камеры, направления взгляда и вектора "вверх".
     return glm::lookAt(pos, pos + front, up);
 }
-
-
