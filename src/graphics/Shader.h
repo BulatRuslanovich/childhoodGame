@@ -5,6 +5,7 @@
 #ifndef SHADER_H
 #define SHADER_H
 #include <string>
+#include <glm/glm.hpp>
 
 
 class Shader {
@@ -14,6 +15,7 @@ public:
     ~Shader();
 
     void use() const;
+    void uniformMatrix(const std::string& name, glm::mat4 matrix) const;
 };
 
 extern Shader* loadShader(const std::string& vertexFile, const std::string& fragmentFile);

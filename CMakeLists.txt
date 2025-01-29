@@ -18,5 +18,7 @@ add_executable(LolEngine src/main.cpp
         src/graphics/Texture.h
         src/loader/PngLoader.cpp
         src/loader/PngLoader.h
+        src/window/Camera.cpp
+        src/window/Camera.h
 )
 target_link_libraries(LolEngine glfw GLEW::GLEW OpenGL::GL png)

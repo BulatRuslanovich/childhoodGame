@@ -27,8 +27,11 @@ public:
 
     static bool pressed(int key);
     static bool jpressed(int key);
+
     static bool clicked(int button);
     static bool jclicked(int button);
+
+    static void toogleCursor();
 };
 
 

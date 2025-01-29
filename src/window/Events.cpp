@@ -51,6 +51,12 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
     Events::y = ypos;
 }
 
+void window_size_callback(GLFWwindow* window, int width, int height) {
+    glViewport(0, 0, width, height);
+    Window::height = height;
+    Window::width = width;
+}
+
 
 int Events::init() {
     GLFWwindow* window = Window::window;
@@ -63,6 +69,7 @@ int Events::init() {
     glfwSetKeyCallback(window, key_callback);
     glfwSetMouseButtonCallback(window, mouse_button_callback);
     glfwSetCursorPosCallback(window, cursor_position_callback);
+    glfwSetWindowSizeCallback(window, window_size_callback);
     return 0;
 }
 
@@ -87,4 +94,9 @@ bool Events::clicked(const int button) {
 
 bool Events::jclicked(const int button) {
     return _keys[MOUSE_BUTTON + button] && _frames[MOUSE_BUTTON + button] == _current;
+}
+
+void Events::toogleCursor() {
+    _cursor_locked = !_cursor_locked;
+    Window::setCursorMode(_cursor_locked ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
 }
