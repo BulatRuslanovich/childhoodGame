@@ -21,7 +21,10 @@ float Events::dx = 0.0f; // Изменение позиции курсора п�
 float Events::dy = 0.0f; // Изменение позиции курсора по Y с последнего кадра.
 
 // Callback-функция для обработки событий клавиатуры.
-void key_callback(GLFWwindow* window, const int key, int scancode, const int action, int mode) {
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
+    (void)scancode;
+    (void)mode;
+    (void)window;
     if (action == GLFW_PRESS) {
         Events::_keys[key] = true; // Клавиша нажата.
         Events::_frames[key] = Events::_current; // Запоминаем кадр, в котором произошло событие.
@@ -33,6 +36,8 @@ void key_callback(GLFWwindow* window, const int key, int scancode, const int act
 
 // Callback-функция для обработки событий кнопок мыши.
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mode) {
+    (void)window;
+    (void)mode;
     if (action == GLFW_PRESS) {
         Events::_keys[MOUSE_BUTTON + button] = true; // Кнопка мыши нажата.
         Events::_frames[MOUSE_BUTTON + button] = Events::_current; // Запоминаем кадр.
@@ -44,6 +49,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mode)
 
 // Callback-функция для обработки перемещения курсора.
 void cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
+    (void)window;
     if (Events::_cursor_started) {
         // Вычисляем изменение позиции курсора.
         Events::dx += xpos - Events::x;
@@ -59,6 +65,7 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
 
 // Callback-функция для обработки изменения размера окна.
 void window_size_callback(GLFWwindow* window, int width, int height) {
+    (void)window;
     glViewport(0, 0, width, height); // Обновляем область вывода OpenGL.
     Window::height = height; // Сохраняем новую высоту окна.
     Window::width = width; // Сохраняем новую ширину окна.
