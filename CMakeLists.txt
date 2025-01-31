@@ -23,7 +23,11 @@ file(GLOB_RECURSE SOURCES
         "src/*/*.h"
 )
 
-add_executable(LolEngine ${SOURCES})
+add_executable(LolEngine ${SOURCES}
+        src/voxels/Chunk.cpp
+        src/voxels/Chunk.h
+        src/graphics/VoxelRenderer.cpp
+        src/graphics/VoxelRenderer.h)
 
 # Настройка включаемых директорий
 target_include_directories(LolEngine PRIVATE
